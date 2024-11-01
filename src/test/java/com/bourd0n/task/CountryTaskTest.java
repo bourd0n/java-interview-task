@@ -1,39 +1,41 @@
-package com.bourd0n.stream.task;
+package com.bourd0n.task;
 
-import org.assertj.core.api.Assertions;
+import com.bourd0n.task.model.Country;
+import com.bourd0n.task.model.TownDto;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static com.bourd0n.stream.task.CountryTask.*;
+import static com.bourd0n.task.CountryCalculationServiceImplementation.*;
 import static org.assertj.core.api.Assertions.*;
 
 public class CountryTaskTest {
 
-    Continent northAmerica = new Continent("North America");
-    Continent africa = new Continent("Africa");
-    Continent australia = new Continent("Australia");
+    ContinentModel northAmerica = new ContinentModel("North America");
+    ContinentModel africa = new ContinentModel("Africa");
+    ContinentModel australia = new ContinentModel("Australia");
 
     Country usa = new Country("USA",
-            List.of(new Town("Boston", 20), new Town("New-York", 50)),
+            Lists.newArrayList(new TownDto("Boston", 20), new TownDto("New-York", 50)),
             northAmerica);
 
     Country canada = new Country("Canada",
-            List.of(new Town("Toronto", 11)),
+            Lists.newArrayList(new TownDto("Toronto", 11)),
             northAmerica);
 
     Country angola = new Country("Angola",
-            List.of(new Town("Luanda", 23), new Town("Lobito", 74)),
+            Lists.newArrayList(new TownDto("Luanda", 23), new TownDto("Lobito", 74)),
             africa);
 
     Country egypt = new Country("Egypt",
-            List.of(new Town("Alexandria", 44), new Town("Cairo", 100)),
+            Lists.newArrayList(new TownDto("Alexandria", 44), new TownDto("Cairo", 100)),
             africa);
 
     Country australiaCountry = new Country("Australia",
-            List.of(new Town("Sydney", 55), new Town("Melbourne", 97)),
+            Lists.newArrayList(new TownDto("Sydney", 55), new TownDto("Melbourne", 97)),
             australia);
 
 
@@ -42,7 +44,7 @@ public class CountryTaskTest {
         assertThat(getPopulationByContinents(
                 List.of(usa, canada), List.of(northAmerica, africa)
         )).isEqualTo(
-                Map.of(northAmerica.getName(), 81)
+                Map.of(northAmerica.getNameOfContinent(), 81)
         );
     }
 
@@ -61,8 +63,8 @@ public class CountryTaskTest {
                 List.of(usa, angola, egypt, australiaCountry), List.of(africa, northAmerica)
         )).isEqualTo(
                 Map.of(
-                        northAmerica.getName(), 70,
-                        africa.getName(), 241
+                        northAmerica.getNameOfContinent(), 70,
+                        africa.getNameOfContinent(), 241
                 )
         );
     }
@@ -73,9 +75,9 @@ public class CountryTaskTest {
                 List.of(usa, canada, angola, egypt, australiaCountry), List.of(africa, northAmerica, australia)
         )).isEqualTo(
                 Map.of(
-                        northAmerica.getName(), 81,
-                        africa.getName(), 241,
-                        australia.getName(), 152
+                        northAmerica.getNameOfContinent(), 81,
+                        africa.getNameOfContinent(), 241,
+                        australia.getNameOfContinent(), 152
                 )
         );
     }
