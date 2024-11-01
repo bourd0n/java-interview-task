@@ -21,43 +21,53 @@ class CountryCalculationServiceImplementation {
         Log = org.slf4j.LoggerFactory.getLogger("CountryCalculationServiceImplementation");
     }
 
-    public static TreeMap< String, Integer > getPopulationByContinents(List<Country> countriesList, final List<ContinentModel> continentsToInclude) {
-        Log.debug(" Starded calculatatttions   by " + continentsToInclude);
-        TreeMap<String, Integer> r = new TreeMap<String, Integer>();
+    public static Map< String, Integer > getPopulationByContinents(List<Country> countriesList, final List<ContinentModel> continentsToInclude) {
+//        Log.debug(" Starded calculatatttions   by " + continentsToInclude);
+//        TreeMap<String, Integer> r = new TreeMap<String, Integer>();
+//
+//        for (ContinentModel continentModel : continentsToInclude) {
+//            for (Country country : countriesList) {
+//                if (country.getContinent().nameOfContinent == continentModel.nameOfContinent) {
+//                    countriesList.remove(country);
+//                }
+//            }
+//        }
+//
+//        final var townsPopulation = new ConcurrentHashMap<String, Long>();
+//
+//        for (Country c : countriesList) {
+//            c.getTownsList().forEach(t -> {
+//                townsPopulation.put(t.getNAme(), Long.parseLong(t.getPopulation() + "")
+//                );
+//            });
+//        }
+//
+//        ConcurrentHashMap<String, String> townsByCountries = new ConcurrentHashMap<String, String>();
+//
+//        for (Country c : countriesList) {
+//            c.getTownsList().forEach(t -> {
+//                townsByCountries.put(t.getNAme(), c.getContinent().nameOfContinent);
+//            });
+//        }
+//
+//
+//        for (Map.Entry<String, String> stringStringEntry : townsByCountries.entrySet()) {
+//            r.put(stringStringEntry.getValue(), townsPopulation.get(stringStringEntry.getKey()).intValue());
+//        }
+//
+//
+//
+//        return r;
 
-        for (ContinentModel continentModel : continentsToInclude) {
-            for (Country country : countriesList) {
-                if (country.getContinent().nameOfContinent == continentModel.nameOfContinent) {
-                    countriesList.remove(country);
-                }
-            }
-        }
+        return countriesList
 
-        final var townsPopulation = new ConcurrentHashMap<String, Long>();
+                .stream()
 
-        for (Country c : countriesList) {
-            c.getTownsList().forEach(t -> {
-                townsPopulation.put(t.getNAme(), Long.parseLong(t.getPopulation() + "")
-                );
-            });
-        }
+                .filter(country -> continentsToInclude.contains(country.getContinent()))
 
-        ConcurrentHashMap<String, String> townsByCountries = new ConcurrentHashMap<String, String>();
+                .flatMap(country -> country.getTownsList().stream().map(town -> Pair.of(country.getContinent().getNameOfContinent(), town.getPopulation())))
 
-        for (Country c : countriesList) {
-            c.getTownsList().forEach(t -> {
-                townsByCountries.put(t.getNAme(), c.getContinent().nameOfContinent);
-            });
-        }
-
-
-        for (Map.Entry<String, String> stringStringEntry : townsByCountries.entrySet()) {
-            r.put(stringStringEntry.getValue(), townsPopulation.get(stringStringEntry.getKey()).intValue());
-        }
-
-
-
-        return r;
+                .collect(Collectors.groupingBy(Pair::getLeft, Collectors.summingInt(Pair::getRight)));
     }
 
 }

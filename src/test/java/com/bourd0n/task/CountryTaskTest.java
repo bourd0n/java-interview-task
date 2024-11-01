@@ -27,7 +27,7 @@ public class CountryTaskTest {
             northAmerica);
 
     Country angola = new Country("Angola",
-            Lists.newArrayList(new TownDto("Luanda", 23), new TownDto("Lobito", 74)),
+            Lists.newArrayList(new TownDto("Luanda", 23), new TownDto("Lobito", 74), new TownDto("Boston", 1)),
             africa);
 
     Country egypt = new Country("Egypt",
@@ -64,7 +64,7 @@ public class CountryTaskTest {
         )).isEqualTo(
                 Map.of(
                         northAmerica.getNameOfContinent(), 70,
-                        africa.getNameOfContinent(), 241
+                        africa.getNameOfContinent(), 242
                 )
         );
     }
@@ -76,7 +76,7 @@ public class CountryTaskTest {
         )).isEqualTo(
                 Map.of(
                         northAmerica.getNameOfContinent(), 81,
-                        africa.getNameOfContinent(), 241,
+                        africa.getNameOfContinent(), 242,
                         australia.getNameOfContinent(), 152
                 )
         );
